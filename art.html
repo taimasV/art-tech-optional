@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f5f1ea" />
+  <title>Тихо — дневник атмосферы</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="art.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Тихо, на главную"><span class="brand-mark">т</span><span>тихо<span class="brand-dot">.</span></span></a>
+      <p class="side-label">ТВОЁ ПРОСТРАНСТВО</p>
+      <button class="nav-item active" id="navToday"><span class="nav-icon">✳</span> Сегодня <span class="nav-count" id="todayCount">0</span></button>
+      <button class="nav-item" id="navArchive"><span class="nav-icon">▤</span> Архив воспоминаний</button>
+      <div class="side-divider"></div>
+      <p class="side-label">КОЛЛЕКЦИИ</p>
+      <button class="collection"><span class="collection-dot peach"></span> Тёплые вечера <span>↗</span></button>
+      <button class="collection"><span class="collection-dot blue"></span> Где пахло морем <span>↗</span></button>
+      <button class="collection"><span class="collection-dot green"></span> Маленькие радости <span>↗</span></button>
+      <button class="new-collection" id="newCollection">＋ Новая коллекция</button>
+      <div class="sidebar-bottom"><div class="avatar">А</div><div><b>Александра</b><small>Личное пространство</small></div><button class="more">···</button></div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar"><div class="breadcrumbs">Твоё пространство <span>/</span> <b id="crumb">Сегодня</b></div><div class="top-actions"><button class="icon-button" title="Поиск">⌕</button><button class="help-button">Как это работает <span>↗</span></button></div></header>
+
+      <section class="page-heading"><div><div class="eyebrow"><span class="live-dot"></span> СУББОТА, 21 НОЯБРЯ 2026</div><h1 id="pageTitle">День, который<br><em>хочется оставить.</em></h1><p class="intro" id="pageIntro">Не обязательно помнить всё. Достаточно сохранить то, что чувствовалось.</p></div><div class="weather-note"><span class="weather-icon">☼</span><div><b>+18° · мягкий свет</b><small>погода внутри — тоже погода</small></div><button class="edit-weather" id="weatherEdit" aria-label="Изменить погоду">✎</button></div></section>
+
+      <div class="workspace" id="todayView">
+        <section class="editor-card">
+          <div class="card-topline"><div><span class="step">01</span><span class="section-kicker">СНАЧАЛА — ОЩУЩЕНИЕ</span></div><span class="save-status" id="saveStatus">● черновик сохранён</span></div>
+          <label class="field-label" for="story">Если бы этот день был ощущением…</label>
+          <textarea id="story" placeholder="Расскажи не только что произошло, но и как это было. Можно коротко, обрывками, как помнится…" maxlength="500"></textarea>
+          <div class="textarea-footer"><span id="wordCount">0 / 500</span><span>Можно просто быть собой</span></div>
+          <div class="mood-row"><span class="field-label small-label">Какое было настроение?</span><div class="moods" id="moods"><button class="mood" data-mood="Тихое">☁ <span>Тихое</span></button><button class="mood" data-mood="Светлое">☀ <span>Светлое</span></button><button class="mood" data-mood="Волнительное">〰 <span>Волнительное</span></button><button class="mood" data-mood="Тёплое">♡ <span>Тёплое</span></button><button class="mood" data-mood="Своё">＋ <span>Своё</span></button></div></div>
+          <div class="card-divider"></div>
+          <div class="attach-grid">
+            <div class="attach-block"><div class="attach-heading"><span class="step">02</span><div><b>Кадры дня</b><small>Фотографии, в которых он остался</small></div></div><label class="upload-zone" for="photoInput"><span class="upload-plus">＋</span><span>Перетащи сюда или <u>выбери фото</u></span><small>JPG, PNG · до 10 фото</small></label><input id="photoInput" type="file" accept="image/*" multiple hidden><div class="photo-previews" id="photoPreviews"></div></div>
+            <div class="attach-block song-block"><div class="attach-heading"><span class="step">03</span><div><b>Звук дня</b><small>Песня, которая звучала внутри</small></div></div><div class="song-input-wrap"><span class="music-note">♫</span><input id="songInput" type="text" placeholder="Название песни или ссылка"><button id="songAdd" aria-label="Добавить песню">↵</button></div><div class="song-tip" id="songTip"><span>♪</span> Одной ноты иногда достаточно,<br>чтобы вспомнить целый вечер.</div></div>
+          </div>
+          <div class="editor-actions"><span class="privacy-note"><span>♧</span> Это видишь только ты</span><button class="create-button" id="createMemory">Сохранить этот день <span>↗</span></button></div>
+        </section>
+        <aside class="preview-column"><div class="preview-label"><span>ВОСПОМИНАНИЕ НАЧИНАЕТСЯ</span><span class="sparkle">✳</span></div><div class="memory-preview" id="memoryPreview"><div class="preview-image" id="previewImage"><div class="image-overlay"></div><span class="image-date">21.11.26 <i>·</i> суббота</span><span class="image-caption" id="previewCaption">Иногда лучший план —<br>никуда не торопиться.</span><div class="image-bottom"><span class="memory-mood" id="previewMood">☀ светлое настроение</span><span>✳</span></div></div><div class="preview-details"><div class="detail-label">МУЗЫКА ЭТОГО ДНЯ</div><div class="preview-song"><span class="song-cover">♫</span><div><b id="previewSong">Твоя песня появится здесь</b><small>станет частью воспоминания</small></div><span class="play-button">▶</span></div></div></div><div class="preview-footnote"><span>✧</span> Твои слова, фото и музыка —<br>в одной истории.</div></aside>
+      </div>
+
+      <section class="archive-view hidden" id="archiveView"><div class="archive-header"><div><span class="section-kicker">ТВОИ МОМЕНТЫ</span><h2>Всё, что осталось<br><em>с тобой.</em></h2></div><div class="archive-stats"><b id="memoryCount">0</b><span>сохранённых<br>воспоминаний</span></div></div><div class="archive-grid" id="archiveGrid"></div><div class="empty-archive" id="emptyArchive"><div class="empty-symbol">✳</div><h3>Здесь будут жить твои дни</h3><p>Сохрани первое воспоминание — оно появится в своей папке.</p><button class="create-button" id="backToToday">Вернуться к сегодняшнему дню <span>↗</span></button></div></section>
+      <footer class="page-footer"><span>Тихо. Твоё настоящее, которое останется.</span><span>Сделано с вниманием к тебе <b>♡</b></span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast">День сохранён в архиве ✨</div>
+  <div class="modal-backdrop hidden" id="memoryModal"><div class="modal"><button class="modal-close" id="modalClose">×</button><div id="modalBody"></div></div></div>
+  <script src="art.js"></script>
+</body>
+</html>
