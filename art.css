@@ -988,3 +988,20 @@ body.composer-open{overflow:hidden}
 html[data-theme="light"] .color-loops{mix-blend-mode:multiply;opacity:.1}
 html[data-theme="light"] .preview-image>.color-loops{opacity:.15}
 @media(prefers-reduced-motion:reduce){.preview-image>.color-loops,.archive-card:hover .color-loops,.modal-hero:hover .color-loops{animation:none;opacity:.11}}
+
+/* Full-bleed navigation and a finished weather-note card. */
+.topbar{width:100vw;margin-left:calc(-248px - 5.4vw);padding-left:calc(248px + 5.4vw);padding-right:5.2vw}
+.weather-note{position:relative;isolation:isolate;align-self:center;min-width:270px;max-width:320px;min-height:98px;margin:0 0 4px;padding:21px 42px 20px 69px;overflow:hidden;border:1px solid color-mix(in srgb,var(--accent) 24%,var(--line));border-radius:13px;background:linear-gradient(135deg,color-mix(in srgb,var(--sage) 50%,var(--paper)),color-mix(in srgb,var(--paper) 91%,var(--accent)));box-shadow:0 12px 32px color-mix(in srgb,var(--ink) 9%,transparent)}
+.weather-note:before{content:"";position:absolute;z-index:-1;top:-38px;right:-18px;width:112px;height:112px;border:1px solid color-mix(in srgb,var(--accent) 17%,transparent);border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 13%,transparent),transparent 69%);box-shadow:0 0 0 11px color-mix(in srgb,var(--accent) 4%,transparent),0 0 0 23px color-mix(in srgb,var(--accent) 3%,transparent)}
+.weather-note>div{position:relative;z-index:1}
+.weather-icon{position:absolute;top:50%;left:17px;display:grid;place-items:center;width:38px;height:38px;transform:translateY(-50%);border:1px solid color-mix(in srgb,var(--accent) 28%,var(--line));border-radius:50%;background:color-mix(in srgb,var(--paper) 72%,var(--sage));color:var(--accent);font-size:19px}
+.weather-note b{font:500 14px/1.3 var(--serif);color:var(--ink)}
+.weather-note small{display:block;margin-top:6px;color:var(--muted);font-size:10px;line-height:1.45}
+.edit-weather{position:absolute;top:9px;right:9px;z-index:2;display:grid;place-items:center;width:27px;height:27px;margin:0;border:1px solid var(--line);border-radius:50%;background:color-mix(in srgb,var(--paper) 85%,transparent);color:var(--muted);font-size:12px;transition:background .2s,color .2s,border-color .2s}
+.edit-weather:hover{border-color:var(--accent);background:var(--accent);color:#fff}
+html[data-theme="light"] .weather-note,html[data-theme="dark"] .weather-note{border-color:color-mix(in srgb,var(--accent) 24%,var(--line));background:linear-gradient(135deg,color-mix(in srgb,var(--sage) 50%,var(--paper)),color-mix(in srgb,var(--paper) 91%,var(--accent)));box-shadow:0 12px 32px color-mix(in srgb,var(--ink) 9%,transparent)}
+html[data-theme="light"] .weather-note b,html[data-theme="dark"] .weather-note b{color:var(--ink)}
+html[data-theme="light"] .weather-note small,html[data-theme="dark"] .weather-note small{color:var(--muted)}
+html[data-theme="light"] .weather-icon,html[data-theme="dark"] .weather-icon{border-color:color-mix(in srgb,var(--accent) 28%,var(--line));background:color-mix(in srgb,var(--paper) 72%,var(--sage));color:var(--accent)}
+@media(max-width:850px){.topbar{margin-left:-96px;padding-left:96px;padding-right:28px}.weather-note{min-width:245px;max-width:285px;padding-left:63px}}
+@media(max-width:650px){.topbar{width:100vw;margin-left:-86px;padding:10px 18px 10px 86px}.weather-note{width:100%;max-width:none;min-width:0;min-height:84px;margin:20px 0 0;padding:18px 42px 17px 64px}.weather-icon{left:15px;width:36px;height:36px}}
