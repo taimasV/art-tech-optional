@@ -1,0 +1,13 @@
+/* Keep the silk behind content while making it visible through page gaps. */
+.app-shell{position:relative;isolation:isolate}
+.grain-backdrop{position:fixed;inset:0;z-index:0;width:100vw;height:100vh;pointer-events:none;opacity:.7;mix-blend-mode:screen}
+.main-content{position:relative;z-index:1}
+html[data-theme="light"] .grain-backdrop{opacity:.52;mix-blend-mode:multiply}
+@media(prefers-reduced-motion:reduce){.grain-backdrop{opacity:.32}}
+
+html[data-theme="dark"]{--wave-muted:#8aa18d}
+html[data-theme="light"]{--wave-muted:#758f79}
+.waveform-player audio{display:none}
+.waveform-player{box-shadow:inset 0 1px #ffffff08,0 7px 18px #0002;animation:waveform-player-in .55s ease-out both}
+@keyframes waveform-player-in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.waveform-player{animation:none}}
