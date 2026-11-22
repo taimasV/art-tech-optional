@@ -1,9 +1,15 @@
 const $ = (id) => document.getElementById(id);
 const themeToggle = $('themeToggle');
+const themeDefaultVersion = localStorage.getItem('tiho-theme-default-version');
+if (themeDefaultVersion !== 'dark-v1') {
+  localStorage.setItem('tiho-theme', 'dark');
+  localStorage.setItem('tiho-theme-default-version', 'dark-v1');
+}
 const savedTheme = localStorage.getItem('tiho-theme');
 document.documentElement.dataset.theme = savedTheme === 'light' ? 'light' : 'dark';
 function updateThemeToggle() {
   const isLight = document.documentElement.dataset.theme === 'light';
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', isLight ? '#f6f3ec' : '#20232a');
   $('themeIcon').textContent = isLight ? '☾' : '☼';
   $('themeLabel').textContent = isLight ? 'Тёмная' : 'Светлая';
   themeToggle.setAttribute('aria-label', `Переключить на ${isLight ? 'тёмную' : 'светлую'} тему`);
@@ -39,6 +45,12 @@ let coverPhoto = '';
 let editingMemoryId = null;
 let memories = [];
 const moodClasses = {'Тихое':'mood-quiet','Светлое':'mood-bright','Волнительное':'mood-restless','Тёплое':'mood-warm','Своё':'mood-own'};
+function setMemoryArtwork(element, memory) {
+  const cover = memory.background || memory.photos?.[0];
+  element.style.backgroundImage = cover
+    ? `linear-gradient(var(--memory-photo-tint, rgba(32,35,42,.36)),var(--memory-photo-tint, rgba(32,35,42,.36))),url("${cover}")`
+    : '';
+}
 const dayMotifs = [
   { id:'water', name:'Вода и дождь', words:/дожд|ливн|мокр|капл|река|море|океан|волна|вода|туман|снег|rain|sea|ocean|water/i },
   { id:'journey', name:'Дорога и движение', words:/дорог|путешеств|поезд|самол|машин|ехал|шла|шёл|гуля|маршрут|станци|город|улиц|окн[оа]|ветер|road|train|travel|city/i },
@@ -84,10 +96,12 @@ function updatePreview() {
   const preview = $('previewImage');
   preview.classList.remove(...Object.values(moodClasses));
   preview.classList.add(moodClasses[selectedMood] || 'mood-own');
+  const moodClass = moodClasses[selectedMood] || 'mood-own';
+  editorCard.classList.remove(...Object.values(moodClasses));
+  editorCard.classList.add(moodClass);
   const cover = coverPhoto || photos[0];
   preview.classList.toggle('has-photo', Boolean(cover));
-  if (cover) preview.style.backgroundImage = `url("${cover}")`;
-  else preview.style.backgroundImage = '';
+  setMemoryArtwork(preview, { background: cover });
   const atmosphere = applyAtmosphere(preview, { title, story:text, mood:selectedMood, song, songArtist:window.tihoSelectedTrack?.artist, songGenre:window.tihoSelectedTrack?.genre, audio:window.tihoMusic?.getPendingFile(), photos });
   $('visualSignature').textContent = atmosphere.signature;
   $('visualReason').textContent = atmosphere.reason;
@@ -184,7 +198,7 @@ function renderArchive() {
   else if (!matches.length) { $('emptyArchive').querySelector('h3').textContent='Такого дня пока не нашлось'; $('emptyArchive').querySelector('p').textContent='Попробуй другое слово: историю, песню, образ или дату.'; }
   matches.forEach(memory => {
     const card = document.createElement('article'); card.className='archive-card'; card.tabIndex=0;
-    const cover = document.createElement('div'); cover.className=`archive-card-image ${moodClasses[memory.mood] || 'mood-own'}`; applyAtmosphere(cover, memory); if (memory.background || memory.photos?.[0]) cover.style.backgroundImage=`url("${memory.background || memory.photos[0]}")`;
+    const cover = document.createElement('div'); cover.className=`archive-card-image ${moodClasses[memory.mood] || 'mood-own'}`; applyAtmosphere(cover, memory); setMemoryArtwork(cover, memory);
     const loops = document.createElement('span'); loops.className='color-loops'; loops.setAttribute('aria-hidden','true');
     const title = document.createElement('span'); title.textContent = memory.title || memory.story?.split(/[.!?\n]/)[0].slice(0,46) || 'День, который остался'; cover.append(loops,title);
     const body = document.createElement('div'); body.className='archive-card-body';
@@ -198,7 +212,7 @@ $('archiveSearch')?.addEventListener('input', renderArchive);
 function escapeHtml(value='') { return value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 async function openMemory(m) {
   editingMemoryId=m.id;
-  const hero = document.createElement('div'); hero.className=`modal-hero ${moodClasses[m.mood] || 'mood-own'}`; applyAtmosphere(hero, m); if (m.background || m.photos?.[0]) hero.style.backgroundImage=`url("${m.background || m.photos[0]}")`;
+  const hero = document.createElement('div'); hero.className=`modal-hero ${moodClasses[m.mood] || 'mood-own'}`; applyAtmosphere(hero, m); setMemoryArtwork(hero, m);
   const loops = document.createElement('span'); loops.className='color-loops'; loops.setAttribute('aria-hidden','true');
   const title = document.createElement('span'); title.className='masked-heading'; title.textContent=m.title || m.story?.split(/[.!?\n]/)[0].slice(0,58) || 'Этот день'; hero.append(loops,title);
   const changeBg=document.createElement('button');changeBg.type='button';changeBg.className='archive-background-button';changeBg.textContent='Сменить фон';changeBg.onclick=()=>$('backgroundInput').click();hero.append(changeBg);
