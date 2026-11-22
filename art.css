@@ -828,6 +828,10 @@ html[data-theme="dark"] .song-result-link{color:#d0b8ff}
 .saved-song-link{display:inline-block;margin-top:14px;color:var(--accent);font-size:11px;text-decoration:none}
 .saved-song-link[hidden]{display:none}
 .saved-song-link:hover{text-decoration:underline}
+.archive-demo-note{max-width:660px;margin:2px 0 18px;color:var(--muted);font:italic 12px/1.65 var(--serif)}
+.archive-demo-badge{position:absolute;top:14px;right:14px;z-index:2;border:1px solid #ffffff70;border-radius:20px;background:#20232a9c;padding:6px 9px;color:#fff;font:600 9px var(--sans);letter-spacing:.04em}
+.archive-demo-card .archive-card-image{position:relative}
+.demo-memory-note{margin:0 0 14px;color:var(--muted);font:italic 12px/1.6 var(--serif)}
 .audio-unavailable{margin:14px 0 0;color:#b27154;font-size:11px}
 html[data-theme="dark"] .audio-unavailable{color:#f0b08d}
 
