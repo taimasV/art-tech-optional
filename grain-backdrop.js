@@ -6,6 +6,7 @@
   if (!context) return;
 
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const ambientBottom = document.getElementById('ambientBottom');
   const pointer = { x: 0.5, y: 0.5, energy: 0 };
   let width = 0;
   let height = 0;
@@ -106,6 +107,20 @@
     }
     lastFrame = 0;
     frame = window.requestAnimationFrame(tick);
+  }
+
+  if (ambientBottom) {
+    let scrollFrame = 0;
+    const updateAmbientPosition = () => {
+      scrollFrame = 0;
+      const shift = motionPreference.matches ? 0 : Math.min(window.scrollY * 0.065, 36);
+      ambientBottom.style.setProperty('--ambient-shift', `${-shift}px`);
+    };
+    window.addEventListener('scroll', () => {
+      if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateAmbientPosition);
+    }, { passive: true });
+    motionPreference.addEventListener?.('change', updateAmbientPosition);
+    updateAmbientPosition();
   }
 
   window.addEventListener('resize', resize, { passive: true });
