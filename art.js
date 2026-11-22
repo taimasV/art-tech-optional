@@ -241,6 +241,7 @@ $('newCollection').addEventListener('click',()=>toast('Коллекции ско
 $('weatherEdit').addEventListener('click',()=>{const value=prompt('Какая сегодня погода внутри? Например: дождь и спокойствие');if(value)$('weatherEdit').title=value;});
 $('createMemory').setAttribute('aria-label','Сохранить воспоминание в архив');
 let accountUser = null;
+let accountApiAvailable = null;
 let activeModalAudioUrl = '';
 let memorySync = Promise.resolve();
 let authMode = 'login';
@@ -269,8 +270,11 @@ function setAuthMode(mode) {
 }
 function openAccount() {
   $('accountError').textContent = '';
-  $('accountForm').classList.toggle('hidden', Boolean(accountUser));
-  document.querySelector('.account-tabs').classList.toggle('hidden', Boolean(accountUser));
+  const serverUnavailable = accountApiAvailable === false;
+  $('accountStaticNotice').classList.toggle('hidden', accountApiAvailable !== false);
+  document.querySelector('.account-copy').classList.toggle('hidden', serverUnavailable);
+  $('accountForm').classList.toggle('hidden', serverUnavailable || Boolean(accountUser));
+  document.querySelector('.account-tabs').classList.toggle('hidden', serverUnavailable || Boolean(accountUser));
   $('accountLogout').classList.toggle('hidden', !accountUser);
   $('accountTitle').textContent = accountUser ? `Привет, ${accountUser.name}` : 'Твои воспоминания всегда рядом';
   $('accountModal').classList.remove('hidden');
@@ -306,7 +310,9 @@ $('accountForm').addEventListener('submit', async event => {
     localStorage.setItem('tiho-memories', JSON.stringify(memories));
     updateCounts(); renderArchive(); $('accountModal').classList.add('hidden');
   } catch (error) {
-    $('accountError').textContent = error.message || 'Проверь соединение и попробуй ещё раз.';
+    $('accountError').textContent = location.hostname.endsWith('github.io')
+      ? 'Вход через аккаунт требует серверной версии сайта. Воспоминания на GitHub Pages сохраняются в этом браузере.'
+      : error.message || 'Проверь соединение и попробуй ещё раз.';
   } finally {
     $('accountSubmit').disabled = false;
   }
@@ -318,11 +324,12 @@ $('accountLogout').addEventListener('click', async () => {
   updateCounts(); renderArchive(); $('accountModal').classList.add('hidden');
   toast('Вы вышли из аккаунта');
 });
-fetch('/api/me').then(response => response.json()).then(result => {
+fetch('/api/me').then(response => { if (!response.ok) throw new Error('API unavailable'); return response.json(); }).then(result => {
+  accountApiAvailable = true;
   if (!result.user) return;
   setAccountUser(result.user); memories = result.memories || [];
   localStorage.setItem('tiho-memories', JSON.stringify(memories)); updateCounts(); renderArchive();
-}).catch(() => {});
+}).catch(() => { accountApiAvailable = false; });
 function saveMemories() {
   try { localStorage.setItem('tiho-memories', JSON.stringify(memories)); }
   catch { toast('Фото слишком большие для хранения в браузере'); }

@@ -78,6 +78,26 @@
     return card;
   }
 
+  function searchAppleCatalog(term) {
+    return new Promise((resolve, reject) => {
+      const callback = `tihoAppleSearch_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const script = document.createElement('script');
+      const url = new URL('https://itunes.apple.com/search');
+      url.searchParams.set('term', term);
+      url.searchParams.set('media', 'music');
+      url.searchParams.set('entity', 'song');
+      url.searchParams.set('country', 'ru');
+      url.searchParams.set('limit', '12');
+      url.searchParams.set('callback', callback);
+      const cleanUp = () => { delete window[callback]; script.remove(); clearTimeout(timeout); };
+      const timeout = setTimeout(() => { cleanUp(); reject(new Error('Каталог музыки не ответил вовремя.')); }, 12000);
+      window[callback] = data => { cleanUp(); resolve(data); };
+      script.onerror = () => { cleanUp(); reject(new Error('Не удалось связаться с каталогом музыки.')); };
+      script.src = url.href;
+      document.head.append(script);
+    });
+  }
+
   async function searchMusic() {
     const term = input.value.trim();
     if (term.length < 2) {
@@ -89,9 +109,24 @@
     searchButton.disabled = true;
     showSearchStatus('Ищу совпадения в каталоге Apple Music…');
     try {
-      const response = await fetch(`/api/music/search?term=${encodeURIComponent(term)}`);
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Не удалось выполнить поиск.');
+      let data;
+      try {
+        const response = await fetch(`/api/music/search?term=${encodeURIComponent(term)}`);
+        data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Не удалось выполнить поиск.');
+      } catch (serverError) {
+        const catalog = await searchAppleCatalog(term);
+        data = { tracks: (catalog.results || []).map(track => ({
+          id: track.trackId,
+          title: track.trackName,
+          artist: track.artistName || 'Неизвестный исполнитель',
+          album: track.collectionName || '',
+          artwork: track.artworkUrl100 || '',
+          url: track.trackViewUrl || '',
+          genre: track.primaryGenreName || '',
+        })) };
+        if (!data.tracks.length && !catalog.results) throw serverError;
+      }
       if (sequence !== searchSequence) return;
       if (!data.tracks?.length) {
         showSearchStatus('Ничего не нашлось. Попробуй название или имя исполнителя.');
