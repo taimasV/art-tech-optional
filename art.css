@@ -1005,3 +1005,12 @@ html[data-theme="light"] .weather-note small,html[data-theme="dark"] .weather-no
 html[data-theme="light"] .weather-icon,html[data-theme="dark"] .weather-icon{border-color:color-mix(in srgb,var(--accent) 28%,var(--line));background:color-mix(in srgb,var(--paper) 72%,var(--sage));color:var(--accent)}
 @media(max-width:850px){.topbar{margin-left:-96px;padding-left:96px;padding-right:28px}.weather-note{min-width:245px;max-width:285px;padding-left:63px}}
 @media(max-width:650px){.topbar{width:100vw;margin-left:-86px;padding:10px 18px 10px 86px}.weather-note{width:100%;max-width:none;min-width:0;min-height:84px;margin:20px 0 0;padding:18px 42px 17px 64px}.weather-icon{left:15px;width:36px;height:36px}}
+.weather-note{align-items:flex-start;min-height:142px;padding:17px 20px 16px 68px}
+.weather-copy{display:block;width:100%}
+.weather-kicker{display:block;margin:0 0 7px;color:var(--accent);font:700 8px var(--sans);letter-spacing:.14em}
+.weather-note b{display:block;max-width:225px;font-size:15px;line-height:1.25}
+.weather-note small{max-width:235px;margin-top:5px;line-height:1.45}
+.weather-action{display:inline-flex;align-items:center;gap:12px;margin-top:10px;padding:5px 0 1px;border:0;border-bottom:1px solid color-mix(in srgb,var(--accent) 35%,transparent);background:transparent;color:var(--accent);font:600 10px var(--sans);cursor:pointer;transition:gap .2s,border-color .2s}
+.weather-action:hover{gap:17px;border-color:var(--accent)}
+.weather-action span{font-size:13px}
+@media(max-width:650px){.weather-note{min-height:132px;padding:16px 18px 15px 64px}}

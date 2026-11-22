@@ -18,7 +18,7 @@ updateThemeToggle();
 const story = $('story'), titleInput = $('eventTitle'), songInput = $('songInput'), photoInput = $('photoInput');
 const composer = $('createMemoryModal'), composerTrigger = $('openMemoryComposer'), editorCard = document.querySelector('.editor-card');
 $('composerForm').append(editorCard);
-function openComposer() { composer.classList.remove('hidden'); document.body.classList.add('composer-open'); titleInput.focus(); }
+function openComposer({ focusStory = false } = {}) { composer.classList.remove('hidden'); document.body.classList.add('composer-open'); (focusStory ? story : titleInput).focus(); }
 function closeComposer() { composer.classList.add('hidden'); document.body.classList.remove('composer-open'); composerTrigger.focus(); }
 composerTrigger.addEventListener('click', openComposer);
 $('closeMemoryComposer').addEventListener('click', closeComposer);
@@ -240,7 +240,20 @@ $('memoryModal').addEventListener('click',e=>{if(e.target===$('memoryModal')){$(
 $('backgroundInput').addEventListener('change',()=>{const file=$('backgroundInput').files?.[0];if(!file||!file.type.startsWith('image/'))return;const reader=new FileReader();reader.onload=()=>{if(editingMemoryId!==null){const memory=memories.find(item=>item.id===editingMemoryId);if(memory){memory.background=reader.result;saveMemories();renderArchive();openMemory(memory);toast('Фон воспоминания обновлён ✨');}}else{coverPhoto=reader.result;renderPhotos();updatePreview();toast('Фон дня обновлён ✨');}editingMemoryId=null;};reader.readAsDataURL(file);$('backgroundInput').value='';});
 $('backgroundAdvice').addEventListener('click',()=>{const words=story.value.toLowerCase();let idea='Выбери снимок с одним главным объектом и свободным местом под текст — так фон поддержит воспоминание, а не перетянет внимание.';if(/море|вода|озер|река|пляж/.test(words))idea='Попробуй кадр воды крупным планом или линию горизонта. Мягкое отражение передаст ощущение дня и оставит место для текста.';else if(/дожд|окн|дом|уют|чай|кофе/.test(words))idea='Подойдёт фото света на окне, чашки или тихой детали дома. Лёгкая расфокусировка сделает фон похожим на память.';else if(/лес|парк|дерев|прогул|ветер/.test(words))idea='Ищи кадр с просветом между деревьями, движением листвы или дорожкой вдаль. Такой фон добавит глубину и сохранит настроение прогулки.';else if(selectedMood==='Тихое')idea='Для тихого настроения попробуй пустое пространство, мягкую тень или размытый свет. Спокойный фон усилит ощущение паузы.';else if(selectedMood==='Волнительное')idea='Выбери кадр с движением — огни, смазанный шаг или ветер в волосах. Один резкий цветовой акцент передаст волнение.';else if(selectedMood==='Тёплое')idea='Подойдёт близкий кадр рук, еды, ткани или закатного света. Тёплая деталь вернёт не только картинку, но и телесное ощущение дня.';$('backgroundHint').textContent=idea;});
 $('newCollection').addEventListener('click',()=>toast('Коллекции скоро можно будет создавать здесь'));
-$('weatherEdit').addEventListener('click',()=>{const value=prompt('Какая сегодня погода внутри? Например: дождь и спокойствие');if(value)$('weatherEdit').title=value;});
+const dailyPrompts = [
+  { question:'Что сегодня хочется запомнить?', hint:'Даже маленький момент может стать важным.', placeholder:'Сегодня я хочу запомнить…' },
+  { question:'Где сегодня стало спокойно?', hint:'Вспомни место, звук или короткую паузу.', placeholder:'Я почувствовал(а) спокойствие, когда…' },
+  { question:'Что сегодня удивило?', hint:'Оставь здесь неожиданную деталь дня.', placeholder:'Не ожидал(а), что…' },
+  { question:'С кем было хорошо рядом?', hint:'Вспомни слова, встречу или общий смех.', placeholder:'Я хочу запомнить, как…' },
+  { question:'Какой звук остался с тобой?', hint:'Песня, шум улицы или тишина — всё считается.', placeholder:'Сегодня звучало…' },
+  { question:'На что сегодня хватило сил?', hint:'Заметь и маленькую победу.', placeholder:'Сегодня у меня получилось…' },
+  { question:'Что возьмёшь с собой в завтра?', hint:'Одна мысль или чувство, которое останется.', placeholder:'Из сегодняшнего дня я беру с собой…' },
+];
+const dayNumber = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+const dailyPrompt = dailyPrompts[dayNumber % dailyPrompts.length];
+$('weatherQuestion').textContent = dailyPrompt.question;
+$('weatherHint').textContent = dailyPrompt.hint;
+$('weatherEdit').addEventListener('click', () => { story.placeholder = dailyPrompt.placeholder; openComposer({ focusStory: true }); });
 $('createMemory').setAttribute('aria-label','Сохранить воспоминание в архив');
 let accountUser = null;
 let accountApiAvailable = null;
