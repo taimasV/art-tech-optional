@@ -14,7 +14,7 @@ window.tihoDemoDays = [
     songArtist: 'Hania Rani',
     songGenre: 'ambient piano',
     photos: [],
-    background: 'examples/river-walk.svg'
+    background: 'examples/01-domoy-peshkom-vdol-reki/river-walk.svg'
   },
   {
     id: 'demo-rain-tea',
@@ -30,7 +30,7 @@ window.tihoDemoDays = [
     songArtist: 'Men I Trust',
     songGenre: 'dream pop',
     photos: [],
-    background: 'examples/rain-tea.svg'
+    background: 'examples/02-chay-i-dozhd-u-okna/rain-tea.svg'
   },
   {
     id: 'demo-project-night',
@@ -46,6 +46,6 @@ window.tihoDemoDays = [
     songArtist: 'M83',
     songGenre: 'synth pop',
     photos: [],
-    background: 'examples/project-night.svg'
+    background: 'examples/03-pyat-minut-do-otpravki/project-night.svg'
   }
 ];
