@@ -1014,3 +1014,6 @@ html[data-theme="light"] .weather-icon,html[data-theme="dark"] .weather-icon{bor
 .weather-action:hover{gap:17px;border-color:var(--accent)}
 .weather-action span{font-size:13px}
 @media(max-width:650px){.weather-note{min-height:132px;padding:16px 18px 15px 64px}}
+html[data-theme="dark"] .page-footer{grid-template-rows:150px auto auto auto}
+html[data-theme="dark"] .page-footer p{grid-column:1/-1;grid-row:4;justify-self:center;margin:8px 0 0;padding-top:14px;border-top:1px solid var(--line);text-align:center}
+@media(max-width:650px){html[data-theme="dark"] .page-footer{grid-template-rows:180px auto auto auto auto}html[data-theme="dark"] .footer-nav{grid-column:1/-1;grid-row:3;justify-content:flex-start}html[data-theme="dark"] .page-footer>small{grid-column:1/-1;grid-row:4}html[data-theme="dark"] .page-footer p{grid-column:1/-1;grid-row:5;justify-self:start;margin:0;padding-top:14px;text-align:left}}
