@@ -228,10 +228,11 @@ async function openMemory(m) {
   songLink.href = m.songLink || '#'; songLink.target = '_blank'; songLink.rel = 'noopener noreferrer'; songLink.hidden = !m.songLink;
   const choices=document.createElement('div');choices.className='modal-photo-choices';
   (m.photos||[]).forEach(src=>{const img=document.createElement('img');img.src=src;img.className=`modal-photo-choice ${(m.background||m.photos?.[0])===src?'selected':''}`;img.title='Сделать фоном';img.onclick=()=>{m.background=src;saveMemories();renderArchive();openMemory(m)};choices.append(img)});
+  const deleteButton=document.createElement('button');deleteButton.type='button';deleteButton.className='memory-delete-button';deleteButton.textContent='Удалить воспоминание';deleteButton.onclick=()=>openDeleteConfirmation(m.id,deleteButton);
   $('modalBody').querySelectorAll('audio').forEach(player => { player.pause(); player.removeAttribute('src'); });
   if (activeModalAudioUrl) window.tihoMusic?.releaseAudioUrl(activeModalAudioUrl);
   activeModalAudioUrl = '';
-  $('modalBody').replaceChildren(hero,date,h,...(m.story ? [text] : []),choices,meta,songLink);$('memoryModal').classList.remove('hidden');
+  $('modalBody').replaceChildren(hero,date,h,...(m.story ? [text] : []),choices,meta,songLink,deleteButton);$('memoryModal').classList.remove('hidden');
   if (m.audio && window.tihoMusic) {
     const player = document.createElement('audio');
     player.className = 'saved-audio-player'; player.controls = true; player.preload = 'metadata';
@@ -248,6 +249,52 @@ async function openMemory(m) {
     }
   }
 }
+let pendingDeleteMemoryId = null;
+let deleteReturnFocus = null;
+function openDeleteConfirmation(memoryId, returnFocus) {
+  pendingDeleteMemoryId = memoryId;
+  deleteReturnFocus = returnFocus;
+  $('deleteMemoryConfirm').classList.remove('hidden');
+  $('cancelMemoryDelete').focus();
+}
+function closeDeleteConfirmation() {
+  $('deleteMemoryConfirm').classList.add('hidden');
+  pendingDeleteMemoryId = null;
+  deleteReturnFocus?.focus();
+  deleteReturnFocus = null;
+}
+document.addEventListener('keydown', event => {
+  const confirmationOpen = !$('deleteMemoryConfirm').classList.contains('hidden');
+  if (!confirmationOpen) return;
+  if (event.key === 'Escape') {
+    event.stopPropagation();
+    closeDeleteConfirmation();
+  } else if (event.key === 'Tab') {
+    const first = $('cancelMemoryDelete'), last = $('confirmMemoryDelete');
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  }
+});
+$('cancelMemoryDelete').addEventListener('click', closeDeleteConfirmation);
+$('deleteMemoryConfirm').addEventListener('click', event => {
+  if (event.target === $('deleteMemoryConfirm')) closeDeleteConfirmation();
+});
+$('confirmMemoryDelete').addEventListener('click', async () => {
+  const memoryIndex = memories.findIndex(memory => memory.id === pendingDeleteMemoryId);
+  if (memoryIndex < 0) { closeDeleteConfirmation(); return; }
+  memories.splice(memoryIndex, 1);
+  saveMemories();
+  updateCounts();
+  renderArchive();
+  $('deleteMemoryConfirm').classList.add('hidden');
+  pendingDeleteMemoryId = null;
+  deleteReturnFocus = null;
+  $('memoryModal').classList.add('hidden');
+  stopModalAudio();
+  editingMemoryId = null;
+  await memorySync;
+  toast('Воспоминание удалено');
+});
 function stopModalAudio() {
   $('modalBody').querySelectorAll('audio').forEach(player => { player.pause(); player.removeAttribute('src'); });
   if (activeModalAudioUrl) window.tihoMusic?.releaseAudioUrl(activeModalAudioUrl);

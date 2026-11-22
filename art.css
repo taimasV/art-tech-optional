@@ -59,6 +59,23 @@ textarea{background:#e9e1d4}
 .modal-photo-choices{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
 .modal-photo-choice{width:55px;height:44px;object-fit:cover;border-radius:4px;cursor:pointer;border:2px solid transparent}
 .modal-photo-choice.selected{border-color:var(--accent)}
+.memory-delete-button{display:block;margin:18px 0 0 auto;padding:9px 13px;border:1px solid #a95c56;border-radius:6px;background:transparent;color:#e49b91;font:500 11px var(--sans);cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease}
+.memory-delete-button:hover{border-color:#d87970;background:#632f32;color:#fff0ed}
+.delete-confirm-backdrop{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:18px;background:rgba(7,9,12,.74);backdrop-filter:blur(5px)}
+.delete-confirm-card{width:min(420px,100%);padding:27px;border:1px solid #554b47;border-radius:12px;background:#26272d;color:#eee9e1;box-shadow:0 24px 80px #0009;text-align:center;animation:soft-panel-in .24s ease-out both}
+.delete-confirm-mark{display:grid;place-items:center;width:38px;height:38px;margin:0 auto 14px;border:1px solid #a95c56;border-radius:50%;color:#f0a39a;font:600 20px var(--serif)}
+.delete-confirm-card h2{margin:0 0 8px;font:500 24px var(--serif)}
+.delete-confirm-card p{margin:0;color:#d0c9c2;font-size:12px;line-height:1.6}
+.delete-confirm-actions{display:flex;justify-content:center;gap:10px;margin-top:21px}
+.delete-confirm-actions button{min-height:38px;padding:8px 13px;border:1px solid #656269;border-radius:6px;background:#35363d;color:#f0ece6;font:500 11px var(--sans);cursor:pointer}
+.delete-confirm-actions button:hover{background:#45464f}
+.delete-confirm-actions #confirmMemoryDelete{border-color:#b65e58;background:#a5443d;color:#fff7f4}
+.delete-confirm-actions #confirmMemoryDelete:hover{background:#c05048}
+html[data-theme="light"] .delete-confirm-card{border-color:#e0c8c2;background:#fffaf8;color:#302a29}
+html[data-theme="light"] .delete-confirm-card p{color:#5b514f}
+html[data-theme="light"] .delete-confirm-actions button{border-color:#d3c7c3;background:#f2eeeb;color:#393230}
+html[data-theme="light"] .delete-confirm-actions #confirmMemoryDelete{border-color:#a7453f;background:#a7453f;color:#fff}
+@media(prefers-reduced-motion:reduce){.delete-confirm-card{animation:none}}
 .photo-thumb-wrap{position:relative;width:39px;height:31px}
 .photo-thumb-wrap .photo-thumb{width:39px;height:31px;border-radius:3px;object-fit:cover;cursor:pointer}
 .photo-thumb-wrap .photo-thumb.cover-choice{outline:2px solid var(--accent);outline-offset:1px}
