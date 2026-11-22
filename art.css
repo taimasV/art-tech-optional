@@ -1095,21 +1095,21 @@ html[data-theme="dark"] .preview-song b{color:#f0eee8}
 html[data-theme="dark"] .preview-song small{color:#c2c8d0}
 
 /* Make each mood distinct in the dark preview and tint uploaded photos to match. */
-html[data-theme="dark"] .mood-quiet{--memory-photo-tint:rgba(48,112,174,.46)}
-html[data-theme="dark"] .mood-bright{--memory-photo-tint:rgba(183,135,24,.44)}
-html[data-theme="dark"] .mood-restless{--memory-photo-tint:rgba(123,79,177,.46)}
-html[data-theme="dark"] .mood-warm{--memory-photo-tint:rgba(177,91,48,.46)}
-html[data-theme="dark"] .mood-own{--memory-photo-tint:rgba(73,132,76,.46)}
+html[data-theme="dark"] .mood-quiet{--memory-photo-tint:rgba(48,112,174,.12)}
+html[data-theme="dark"] .mood-bright{--memory-photo-tint:rgba(183,135,24,.12)}
+html[data-theme="dark"] .mood-restless{--memory-photo-tint:rgba(123,79,177,.13)}
+html[data-theme="dark"] .mood-warm{--memory-photo-tint:rgba(177,91,48,.13)}
+html[data-theme="dark"] .mood-own{--memory-photo-tint:rgba(73,132,76,.12)}
 html[data-theme="dark"] .preview-image.mood-quiet,html[data-theme="dark"] .archive-card-image.mood-quiet,html[data-theme="dark"] .modal-hero.mood-quiet{--weather-glow:#9bcfff;background-image:linear-gradient(145deg,#83b5dc 0%,#416c94 52%,#263d58 100%)}
 html[data-theme="dark"] .preview-image.mood-bright,html[data-theme="dark"] .archive-card-image.mood-bright,html[data-theme="dark"] .modal-hero.mood-bright{--weather-glow:#ffe281;background-image:linear-gradient(145deg,#f0d67e 0%,#a98838 52%,#514323 100%)}
 html[data-theme="dark"] .preview-image.mood-restless,html[data-theme="dark"] .archive-card-image.mood-restless,html[data-theme="dark"] .modal-hero.mood-restless{--weather-glow:#d6b2ff;background-image:linear-gradient(145deg,#b89adc 0%,#765897 52%,#40304f 100%)}
 html[data-theme="dark"] .preview-image.mood-warm,html[data-theme="dark"] .archive-card-image.mood-warm,html[data-theme="dark"] .modal-hero.mood-warm{--weather-glow:#ffc299;background-image:linear-gradient(145deg,#dfa27d 0%,#9a6148 52%,#4d342d 100%)}
 html[data-theme="dark"] .preview-image.mood-own,html[data-theme="dark"] .archive-card-image.mood-own,html[data-theme="dark"] .modal-hero.mood-own{--weather-glow:#b7e3a9;background-image:linear-gradient(145deg,#a4cd96 0%,#63885c 52%,#304536 100%)}
-html[data-theme="light"] .mood-quiet{--memory-photo-tint:rgba(75,139,190,.28)}
-html[data-theme="light"] .mood-bright{--memory-photo-tint:rgba(210,163,44,.26)}
-html[data-theme="light"] .mood-restless{--memory-photo-tint:rgba(141,102,190,.28)}
-html[data-theme="light"] .mood-warm{--memory-photo-tint:rgba(190,106,63,.28)}
-html[data-theme="light"] .mood-own{--memory-photo-tint:rgba(92,145,85,.26)}
+html[data-theme="light"] .mood-quiet{--memory-photo-tint:rgba(75,139,190,.07)}
+html[data-theme="light"] .mood-bright{--memory-photo-tint:rgba(210,163,44,.07)}
+html[data-theme="light"] .mood-restless{--memory-photo-tint:rgba(141,102,190,.08)}
+html[data-theme="light"] .mood-warm{--memory-photo-tint:rgba(190,106,63,.08)}
+html[data-theme="light"] .mood-own{--memory-photo-tint:rgba(92,145,85,.07)}
 html[data-theme="dark"] #composerForm .editor-card.mood-quiet{--input-mood-bg:#293d50;--input-mood-border:#526f89;--input-mood-focus:#9bcfff}
 html[data-theme="dark"] #composerForm .editor-card.mood-bright{--input-mood-bg:#494022;--input-mood-border:#89753d;--input-mood-focus:#ffe281}
 html[data-theme="dark"] #composerForm .editor-card.mood-restless{--input-mood-bg:#3a304b;--input-mood-border:#6b5885;--input-mood-focus:#d6b2ff}
@@ -1128,6 +1128,47 @@ html[data-theme="light"] #composerForm .editor-card.mood-own{--input-mood-bg:#e6
 #composerForm .editor-card[class*="mood-"] .memory-title-input:focus,
 #composerForm .editor-card[class*="mood-"] .song-input-wrap:focus-within{box-shadow:0 0 0 2px color-mix(in srgb,var(--input-mood-focus) 50%,transparent)}
 #composerForm .editor-card[class*="mood-"] .mood.selected{box-shadow:0 0 0 2px var(--input-mood-focus)}
+
+/* Give saved photos the largest surface, with the mood carried by the frame and captions. */
+.archive-card-image{height:238px;background-position:center;background-size:cover}
+html[data-theme] .archive-card-image:after,html[data-theme] .modal-hero:after{background:linear-gradient(180deg,transparent 48%,rgba(14,17,22,.08) 64%,rgba(14,17,22,.68) 100%)}
+.archive-card-body{transition:background .3s ease,border-color .3s ease}
+.archive-card-body.mood-quiet{--saved-mood:#8db8d8}
+.archive-card-body.mood-bright{--saved-mood:#e0c36e}
+.archive-card-body.mood-restless{--saved-mood:#c1a1df}
+.archive-card-body.mood-warm{--saved-mood:#dfa07c}
+.archive-card-body.mood-own{--saved-mood:#a5c894}
+html[data-theme="dark"] .archive-card-body.mood-quiet{background:#263747}
+html[data-theme="dark"] .archive-card-body.mood-bright{background:#393421}
+html[data-theme="dark"] .archive-card-body.mood-restless{background:#342c41}
+html[data-theme="dark"] .archive-card-body.mood-warm{background:#403129}
+html[data-theme="dark"] .archive-card-body.mood-own{background:#2b3b2e}
+html[data-theme="light"] .archive-card-body.mood-quiet{background:#e7eff6}
+html[data-theme="light"] .archive-card-body.mood-bright{background:#f6f0d9}
+html[data-theme="light"] .archive-card-body.mood-restless{background:#eee8f5}
+html[data-theme="light"] .archive-card-body.mood-warm{background:#f5eae1}
+html[data-theme="light"] .archive-card-body.mood-own{background:#e9efe5}
+.archive-card-body[class*="mood-"] .archive-card-date,
+.archive-card-body[class*="mood-"] .archive-card-tags span:first-child{color:var(--saved-mood)}
+.modal{transition:background .3s ease,border-color .3s ease}
+.modal-hero{height:350px;background-position:center;background-size:cover}
+.modal.mood-quiet{--saved-mood:#8db8d8}
+.modal.mood-bright{--saved-mood:#e0c36e}
+.modal.mood-restless{--saved-mood:#c1a1df}
+.modal.mood-warm{--saved-mood:#dfa07c}
+.modal.mood-own{--saved-mood:#a5c894}
+html[data-theme="dark"] .modal.mood-quiet{background:#263747}
+html[data-theme="dark"] .modal.mood-bright{background:#393421}
+html[data-theme="dark"] .modal.mood-restless{background:#342c41}
+html[data-theme="dark"] .modal.mood-warm{background:#403129}
+html[data-theme="dark"] .modal.mood-own{background:#2b3b2e}
+html[data-theme="light"] .modal.mood-quiet{background:#e7eff6}
+html[data-theme="light"] .modal.mood-bright{background:#f6f0d9}
+html[data-theme="light"] .modal.mood-restless{background:#eee8f5}
+html[data-theme="light"] .modal.mood-warm{background:#f5eae1}
+html[data-theme="light"] .modal.mood-own{background:#e9efe5}
+.modal[class*="mood-"] .modal-date,.modal[class*="mood-"] .modal-meta{color:var(--saved-mood)}
+@media(max-width:580px){.archive-card-image{height:175px}.modal-hero{height:245px}}
 html[data-theme="dark"] .footer-nav button{color:#e0e6eb}
 html[data-theme="dark"] .footer-nav button:hover{color:var(--accent)}
 html[data-theme="dark"] .page-footer>p,html[data-theme="dark"] .page-footer>small{color:#c2c8c3}

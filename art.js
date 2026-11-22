@@ -197,11 +197,12 @@ function renderArchive() {
   if (!memories.length) { $('emptyArchive').querySelector('h3').textContent='Здесь будут жить твои дни'; $('emptyArchive').querySelector('p').textContent='Сохрани первое воспоминание — оно появится в своей папке.'; }
   else if (!matches.length) { $('emptyArchive').querySelector('h3').textContent='Такого дня пока не нашлось'; $('emptyArchive').querySelector('p').textContent='Попробуй другое слово: историю, песню, образ или дату.'; }
   matches.forEach(memory => {
-    const card = document.createElement('article'); card.className='archive-card'; card.tabIndex=0;
+    const moodClass = moodClasses[memory.mood] || 'mood-own';
+    const card = document.createElement('article'); card.className=`archive-card ${moodClass}`; card.tabIndex=0;
     const cover = document.createElement('div'); cover.className=`archive-card-image ${moodClasses[memory.mood] || 'mood-own'}`; applyAtmosphere(cover, memory); setMemoryArtwork(cover, memory);
     const loops = document.createElement('span'); loops.className='color-loops'; loops.setAttribute('aria-hidden','true');
     const title = document.createElement('span'); title.textContent = memory.title || memory.story?.split(/[.!?\n]/)[0].slice(0,46) || 'День, который остался'; cover.append(loops,title);
-    const body = document.createElement('div'); body.className='archive-card-body';
+    const body = document.createElement('div'); body.className=`archive-card-body ${moodClass}`;
     const date = document.createElement('div'); date.className='archive-card-date'; date.textContent=`${memory.displayDate} · ${memory.dayName}`;
     const desc = document.createElement('p'); desc.textContent=memory.story || 'Название, фото и музыка сохранили атмосферу этого дня.';
     const tags = document.createElement('div'); tags.className='archive-card-tags'; tags.innerHTML=`<span>♡ ${escapeHtml(memory.mood)}</span><span>✳ ${escapeHtml(memory.motifName || atmosphereFor(memory).motifName)}</span><span>${memory.song || memory.audio ? '♫ музыка' : '✳ воспоминание'}</span>`;
@@ -212,6 +213,9 @@ $('archiveSearch')?.addEventListener('input', renderArchive);
 function escapeHtml(value='') { return value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 async function openMemory(m) {
   editingMemoryId=m.id;
+  const modalSurface = $('memoryModal').querySelector('.modal');
+  modalSurface.classList.remove(...Object.values(moodClasses));
+  modalSurface.classList.add(moodClasses[m.mood] || 'mood-own');
   const hero = document.createElement('div'); hero.className=`modal-hero ${moodClasses[m.mood] || 'mood-own'}`; applyAtmosphere(hero, m); setMemoryArtwork(hero, m);
   const loops = document.createElement('span'); loops.className='color-loops'; loops.setAttribute('aria-hidden','true');
   const title = document.createElement('span'); title.className='masked-heading'; title.textContent=m.title || m.story?.split(/[.!?\n]/)[0].slice(0,58) || 'Этот день'; hero.append(loops,title);
