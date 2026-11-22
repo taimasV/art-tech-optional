@@ -1092,3 +1092,19 @@ html[data-theme="dark"] .footer-nav button{color:#e0e6eb}
 html[data-theme="dark"] .footer-nav button:hover{color:var(--accent)}
 html[data-theme="dark"] .page-footer>p,html[data-theme="dark"] .page-footer>small{color:#c2c8c3}
 @media(max-width:650px){.page-footer{gap:13px}.footer-nav{gap:8px 18px}.page-footer>p{padding-top:11px}}
+
+/* A pale Circuit Flash panel keeps the archive indicator in both themes. */
+html[data-theme="light"] .circuit-flash{--circuit-accent:#1678c8;--circuit-ray:#82b7e2;position:relative;display:block;height:184px;overflow:hidden;border:1px solid #cbdbea;border-radius:10px;background:radial-gradient(ellipse at 52% 130%,#dbeeff 0,transparent 66%),linear-gradient(115deg,#f7f9fc,#edf4fa 55%,#faf8f2);box-shadow:inset 0 1px #fff,0 10px 28px #2747600d;isolation:isolate}
+html[data-theme="light"] .circuit-flash:before{background:linear-gradient(90deg,transparent 49.9%,#2f7fc20e 50%,transparent 50.1%),linear-gradient(0deg,transparent 49.9%,#2f7fc20e 50%,transparent 50.1%);background-size:38px 38px}
+html[data-theme="light"] .circuit-flash:after{background:linear-gradient(90deg,transparent,#458cc51a,transparent);opacity:.55}
+html[data-theme="light"] .circuit-hud,html[data-theme="light"] .circuit-caption{color:#63798b}
+html[data-theme="light"] .circuit-status{color:#465f73}
+html[data-theme="light"] .circuit-status i{background:#4e9ce0;box-shadow:0 0 9px #4e9ce055}
+html[data-theme="light"] .circuit-hud output,html[data-theme="light"] .circuit-caption b{color:#1678c8}
+html[data-theme="light"] .circuit-stat{color:#354c5e}
+html[data-theme="light"] .circuit-stat strong{color:#263f53}
+html[data-theme="light"] .circuit-total strong{color:#1678c8}
+html[data-theme="light"] .circuit-stat strong small,html[data-theme="light"] .circuit-stat-label,html[data-theme="light"] .circuit-total span,html[data-theme="light"] .circuit-last small{color:#61798b}
+html[data-theme="light"] .circuit-archive-action{border-color:#a8c5dc;background:#f4f9fd;color:#294c67}
+html[data-theme="light"] .circuit-archive-action span{color:#1678c8}
+html[data-theme="light"] .circuit-archive-action:hover{border-color:#378bd0;background:#e4f2fc;color:#173d5d}

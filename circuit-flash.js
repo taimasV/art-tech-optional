@@ -56,6 +56,7 @@
     const palette = getComputedStyle(panel);
     const accent = palette.getPropertyValue('--circuit-accent').trim() || '#f2c66d';
     const rayColor = palette.getPropertyValue('--circuit-ray').trim() || '#8bdcff';
+    const lightTheme = document.documentElement.dataset.theme === 'light';
     context.clearRect(0, 0, width, height);
 
     const targetX = pointer.x * width;
@@ -65,16 +66,16 @@
     const spacing = 13;
 
     const ray = context.createLinearGradient(targetX, 0, targetX, height);
-    ray.addColorStop(0, 'rgba(116, 205, 239, 0.01)');
-    ray.addColorStop(0.55, 'rgba(116, 205, 239, 0.12)');
-    ray.addColorStop(1, 'rgba(116, 205, 239, 0)');
+    ray.addColorStop(0, lightTheme ? 'rgba(38, 126, 198, 0.01)' : 'rgba(116, 205, 239, 0.01)');
+    ray.addColorStop(0.55, lightTheme ? 'rgba(38, 126, 198, 0.09)' : 'rgba(116, 205, 239, 0.12)');
+    ray.addColorStop(1, lightTheme ? 'rgba(38, 126, 198, 0)' : 'rgba(116, 205, 239, 0)');
     context.fillStyle = ray;
     context.fillRect(targetX - 1, 0, 2, height);
 
     const beam = context.createLinearGradient(scanX - 34, 0, scanX + 34, 0);
-    beam.addColorStop(0, 'rgba(123, 214, 255, 0)');
-    beam.addColorStop(0.5, 'rgba(123, 214, 255, 0.13)');
-    beam.addColorStop(1, 'rgba(123, 214, 255, 0)');
+    beam.addColorStop(0, lightTheme ? 'rgba(44, 130, 201, 0)' : 'rgba(123, 214, 255, 0)');
+    beam.addColorStop(0.5, lightTheme ? 'rgba(44, 130, 201, 0.08)' : 'rgba(123, 214, 255, 0.13)');
+    beam.addColorStop(1, lightTheme ? 'rgba(44, 130, 201, 0)' : 'rgba(123, 214, 255, 0)');
     context.fillStyle = beam;
     context.fillRect(scanX - 34, 0, 68, height);
 
@@ -85,7 +86,7 @@
         const focus = Math.max(0, 1 - Math.sqrt(dx * dx * 4 + dy * dy * 3));
         const scan = Math.max(0, 1 - Math.abs(x - scanX) / 90);
         const alpha = 0.14 + focus * 0.45 + scan * 0.16;
-        context.fillStyle = `rgba(151, 207, 225, ${alpha})`;
+        context.fillStyle = lightTheme ? `rgba(75, 131, 174, ${alpha * 0.58})` : `rgba(151, 207, 225, ${alpha})`;
         context.beginPath();
         context.arc(x, y, 0.8 + focus * 0.35, 0, Math.PI * 2);
         context.fill();
@@ -93,7 +94,7 @@
     }
 
     context.save();
-    context.strokeStyle = 'rgba(127, 204, 235, 0.20)';
+    context.strokeStyle = lightTheme ? 'rgba(52, 118, 168, 0.18)' : 'rgba(127, 204, 235, 0.20)';
     context.lineWidth = 0.8;
     context.beginPath();
     context.moveTo(0, targetY); context.lineTo(width, targetY);
@@ -129,7 +130,7 @@
 
   function animate(now) {
     frame = 0;
-    if (!visible || document.hidden || document.documentElement.dataset.theme !== 'dark') return;
+    if (!visible || document.hidden) return;
     paint((now - startedAt) / 1000);
     if (!reducedMotion.matches) frame = requestAnimationFrame(animate);
   }
@@ -137,7 +138,7 @@
   function sync() {
     if (frame) cancelAnimationFrame(frame);
     frame = 0;
-    if (document.documentElement.dataset.theme !== 'dark' || !visible || document.hidden) return;
+    if (!visible || document.hidden) return;
     startedAt = performance.now();
     if (reducedMotion.matches) paint(0);
     else frame = requestAnimationFrame(animate);
